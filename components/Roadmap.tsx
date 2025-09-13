@@ -1,14 +1,13 @@
 import React from 'react';
-import { RoadmapIcon, VerifiedIcon } from './IconComponents';
 
 interface RoadmapItemProps {
-    quarter: string;
+    phase: string;
     title: string;
-    description: string;
+    description: string[];
     status: 'complete' | 'inprogress' | 'planned';
 }
 
-const RoadmapItem: React.FC<RoadmapItemProps> = ({ quarter, title, description, status }) => {
+const RoadmapItem: React.FC<RoadmapItemProps> = ({ phase, title, description, status }) => {
     const statusClasses = {
         complete: {
             bg: 'bg-brand-success',
@@ -40,9 +39,13 @@ const RoadmapItem: React.FC<RoadmapItemProps> = ({ quarter, title, description, 
 
             {/* Content */}
             <div className="pb-12">
-                <p className={`font-bold text-sm ${currentStatus.text}`}>{quarter}</p>
+                <p className={`font-bold text-sm ${currentStatus.text}`}>{phase}</p>
                 <h3 className="text-xl font-bold text-brand-text-primary mt-1">{title}</h3>
-                <p className="text-brand-text-secondary mt-2">{description}</p>
+                <ul className="list-disc list-inside text-brand-text-secondary mt-2 space-y-1">
+                    {description.map((point, idx) => (
+                        <li key={idx}>{point}</li>
+                    ))}
+                </ul>
             </div>
         </div>
     );
@@ -50,20 +53,62 @@ const RoadmapItem: React.FC<RoadmapItemProps> = ({ quarter, title, description, 
 
 const Roadmap: React.FC = () => {
     const roadmapData: RoadmapItemProps[] = [
-        { quarter: 'Q3 2024', title: 'Platform Launch & Core Features', description: 'Initial prototype with tokenization, order book trading, and AI insights.', status: 'complete' },
-        { quarter: 'Q4 2024', title: 'Smart Contract Deployment & Audit', description: 'Deploy audited ERC-20 and Exchange contracts to Ethereum testnet for public testing.', status: 'inprogress' },
-        { quarter: 'Q1 2025', title: 'DAO Governance & BOND Token', description: 'Introduce the BOND governance token, allowing the community to vote on platform upgrades and parameters.', status: 'planned' },
-        { quarter: 'Q2 2025', title: 'Yield Farming & Advanced DeFi', description: 'Launch advanced yield strategies, including staking BOND tokens and leveraging liquidity pool positions.', status: 'planned' },
-        { quarter: 'Q3 2025', title: 'Expansion to New Asset Classes', description: 'Begin research and development for tokenizing other illiquid assets, such as real estate and private equity.', status: 'planned' },
+        { 
+            phase: 'Phase 1', 
+            title: 'Prototype Enhancement', 
+            description: [
+                'Improve marketplace UI and simulated order book',
+                'Integrate basic KYC flow',
+                'Add sample compliance reports',
+                'Build static AI insights (risk summaries)'
+            ], 
+            status: 'complete' 
+        },
+        { 
+            phase: 'Phase 2', 
+            title: 'MVP Development', 
+            description: [
+                'Deploy tokenized bonds on test blockchain',
+                'Enable real trades with test INR wallets',
+                'Automate KYC verification + risk profiling',
+                'Expand regulator dashboard with live monitoring'
+            ], 
+            status: 'inprogress' 
+        },
+        { 
+            phase: 'Phase 3', 
+            title: 'Pilot with Institutions', 
+            description: [
+                'Partner with NBFC / fintech sandbox',
+                'Onboard select retail investors with fractional bonds',
+                'Simulate UPI integration for deposits/withdrawals',
+                'Add AI-driven bond scoring and fraud detection'
+            ], 
+            status: 'planned' 
+        },
+        { 
+            phase: 'Phase 4', 
+            title: 'Scale & Compliance Alignment', 
+            description: [
+                'Work with SEBI sandbox for approvals',
+                'Launch full-scale marketplace',
+                'Expand to corporate, municipal, and govt bonds',
+                'Introduce gamified rewards & governance'
+            ], 
+            status: 'planned' 
+        }
     ];
+
     return (
         <div>
             <div className="text-center mb-12">
                 <h2 className="text-4xl font-bold text-brand-text-primary mb-2">Future Vision & Roadmap</h2>
-                <p className="text-lg text-brand-text-secondary max-w-2xl mx-auto">Our journey to build a transparent, liquid, and accessible global market for all debt instruments.</p>
+                <p className="text-lg text-brand-text-secondary max-w-2xl mx-auto">
+                    Our step-by-step journey to build a compliant, liquid, and transparent bond marketplace.
+                </p>
             </div>
             <div className="max-w-3xl mx-auto">
-                 {roadmapData.map(item => <RoadmapItem key={item.title} {...item} />)}
+                {roadmapData.map(item => <RoadmapItem key={item.title} {...item} />)}
             </div>
         </div>
     );
